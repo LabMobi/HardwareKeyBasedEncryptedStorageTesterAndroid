@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1030869042058",
+    "project_id": "hwkeyencryptionstoragetester",
+    "storage_bucket": "hwkeyencryptionstoragetester.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1030869042058:android:d53669e362e4a55e887e73",
+        "android_client_info": {
+          "package_name": "mobi.lab.hardwarekeybasedencryptedstoragetester"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1030869042058-h9t2i3imsne2p85qd0bvfu5h2f410fel.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2_6kLRy2seo0TXLYrdxomzG6YR75j948"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1030869042058-h9t2i3imsne2p85qd0bvfu5h2f410fel.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
