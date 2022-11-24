@@ -53,7 +53,6 @@ class SplashActivity : BaseActivity() {
         viewModel.action.onEachEvent { action ->
             val intent = when (action) {
                 SplashViewModel.Action.LaunchApplication -> MainActivity.getIntent(this)
-                SplashViewModel.Action.LaunchLogin -> LoginActivity.getIntent(this)
             }
             startActivity(intent)
             finish()
