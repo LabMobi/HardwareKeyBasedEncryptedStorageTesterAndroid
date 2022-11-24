@@ -18,7 +18,8 @@
     <string name="error_generic">Something went wrong. Please try again.</string>
     <string name="error_no_network">Connection error. Please try again.</string>
     <string name="text_status_start">Click to start</string>
-    <string name="button_start">Run the test</string>
+    <string name="button_start_encrypted">Run the encrypted test</string>
+    <string name="button_start_clear_text">Run the clear text test</string>
     <string name="title_share">Share</string>
     <string name="text_status_running">Test in progress ..</string>
     <string name="text_status_test_success">Test success!</string>

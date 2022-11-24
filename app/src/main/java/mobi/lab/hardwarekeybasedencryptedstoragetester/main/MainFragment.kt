@@ -51,7 +51,8 @@ class MainFragment : BaseFragment(), ViewBindingHolder<FragmentMainBinding> by F
         super.onViewCreated(view, savedInstanceState)
         requireBinding {
             initToolbar(this)
-            buttonStartTest.setOnClickListener { viewModel.onRunTestClicked() }
+            buttonStartEncryptedTest.setOnClickListener { viewModel.onRunTestEncryptedClicked() }
+            buttonStartClearTextTest.setOnClickListener { viewModel.onRunTestClearTextClicked() }
         }
 
         /**

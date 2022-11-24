@@ -12,7 +12,7 @@ import mobi.lab.hardwarekeybasedencryptedstoragetester.common.rx.SchedulerProvid
 import mobi.lab.hardwarekeybasedencryptedstoragetester.common.rx.dispose
 import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.entities.StorageTestResult
 import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.gateway.LoggerGateway
-import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.usecases.storage.HardwareKeyStoreBasedEncryptedStorageTestUseCase
+import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.usecases.storage.StorageTestUseCase
 import mobi.lab.hardwarekeybasedencryptedstoragetester.mvvm.SingleEvent
 import mobi.lab.hardwarekeybasedencryptedstoragetester.mvvm.asLiveData
 import java.util.Locale
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val schedulers: SchedulerProvider,
     private val logger: LoggerGateway,
-    private val hardwareKeyStoreBasedEncryptedStorageTestUseCase: HardwareKeyStoreBasedEncryptedStorageTestUseCase
+    private val hardwareKeyStoreBasedEncryptedStorageTestUseCase: StorageTestUseCase
 ) : ViewModel(), LoggerGateway.LoggerGatewayListener {
 
     private val _action = MutableLiveData<SingleEvent<Action>>()
@@ -42,13 +42,24 @@ class MainViewModel @Inject constructor(
         logger.setLogLinesListener(null)
     }
 
-    fun onRunTestClicked() {
+    fun onRunTestEncryptedClicked() {
         logger.clearLog()
         updateState { it.copy(status = UiTestStatus.InProgress) }
         dispose(disposable)
         logger.d(getDeviceInfoAsText())
         disposable = hardwareKeyStoreBasedEncryptedStorageTestUseCase
-            .execute()
+            .execute(useEncryptedStorage = true)
+            .compose(schedulers.single(Schedulers.computation(), AndroidSchedulers.mainThread()))
+            .subscribe(::onTestSuccess, ::onTestFailed)
+    }
+
+    fun onRunTestClearTextClicked() {
+        logger.clearLog()
+        updateState { it.copy(status = UiTestStatus.InProgress) }
+        dispose(disposable)
+        logger.d(getDeviceInfoAsText())
+        disposable = hardwareKeyStoreBasedEncryptedStorageTestUseCase
+            .execute(useEncryptedStorage = false)
             .compose(schedulers.single(Schedulers.computation(), AndroidSchedulers.mainThread()))
             .subscribe(::onTestSuccess, ::onTestFailed)
     }

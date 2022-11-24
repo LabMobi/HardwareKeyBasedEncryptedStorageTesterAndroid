@@ -4,22 +4,20 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.text.TextUtils
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
 import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.entities.StorageException
-import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.gateway.StorageGateway
+import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.gateway.ClearTextStorageGateway
 import java.lang.reflect.Type
 import javax.inject.Inject
 
-class StorageImpl @Inject constructor(private val appContext: Context) : StorageGateway {
+class StorageClearTextImpl @Inject constructor(private val appContext: Context) : ClearTextStorageGateway {
 
     @SuppressLint("ApplySharedPref")
     @Suppress("SwallowedException")
     override fun storeData(tag: String, data: Any?) {
-        val pref = getEncryptedSharedPreferencesFor(tag)
+        val pref = getSharedPrefsFor(tag)
 
         // Convert the result to JSON and store
         val dataJson = if (data != null) createGson().toJson(data) else null
@@ -53,7 +51,7 @@ class StorageImpl @Inject constructor(private val appContext: Context) : Storage
 
     @Suppress("SwallowedException")
     override fun <T> retrieveData(tag: String, type: Type): T? {
-        val pref = getEncryptedSharedPreferencesFor(tag)
+        val pref = getSharedPrefsFor(tag)
 
         // Get the value if we have any
         val dataJson = pref.getString(getPrimaryDataKey(tag), null)
@@ -74,29 +72,15 @@ class StorageImpl @Inject constructor(private val appContext: Context) : Storage
         // If we do not do this then the read after remove will not return a null value
         storeData(tag, null)
         try {
-            val pref = getEncryptedSharedPreferencesFor(tag)
+            val pref = getSharedPrefsFor(tag)
             pref.edit().remove(tag)
         } catch (e: Throwable) {
             throw StorageException.forStore("Unable to remove a value from device storage. Check if there is space on the disk.")
         }
     }
 
-    private fun getEncryptedSharedPreferencesFor(tag: String): SharedPreferences {
-        val masterKey: MasterKey = createOrGetMasterKey()
-
-        return EncryptedSharedPreferences.create(
-            appContext,
-            getStoragePrefix(tag),
-            masterKey,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-        )
-    }
-
-    private fun createOrGetMasterKey(): MasterKey {
-        return MasterKey.Builder(appContext, STORAGE_MASTER_KEY_ALIAS)
-            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-            .build()
+    private fun getSharedPrefsFor(tag: String): SharedPreferences {
+        return appContext.getSharedPreferences(getStoragePrefix(tag), Context.MODE_PRIVATE)
     }
 
     private fun getStoragePrefix(tag: String): String {
@@ -112,7 +96,6 @@ class StorageImpl @Inject constructor(private val appContext: Context) : Storage
     }
 
     companion object {
-        const val STORAGE_MASTER_KEY_ALIAS = "_tester_master_key_"
-        const val STORAGE_ID = "mobi.lab.hardwarekeybasedencryptedstoragetester"
+        const val STORAGE_ID = "mobi.lab.hardwarekeybasedencryptedstoragetester_clear"
     }
 }

@@ -1,0 +1,3 @@
+package mobi.lab.hardwarekeybasedencryptedstoragetester.domain.gateway
+
+interface ClearTextStorageGateway : StorageGateway
