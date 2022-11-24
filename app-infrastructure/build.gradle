@@ -69,6 +69,9 @@ dependencies {
     }
     kapt libs.glide.compiler
 
+    // Crypto
+    implementation libs.androidx.security.crypto
+
     implementation project(":app-domain")
     implementation project(":app-common")
 }

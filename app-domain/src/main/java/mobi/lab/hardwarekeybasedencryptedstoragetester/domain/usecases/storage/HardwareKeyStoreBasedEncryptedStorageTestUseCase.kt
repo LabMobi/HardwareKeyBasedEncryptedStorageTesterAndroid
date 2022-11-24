@@ -70,16 +70,16 @@ class HardwareKeyStoreBasedEncryptedStorageTestUseCase @Inject constructor(
         storageGateway.removeData(x3Tag)
 
         logger.d("Checking that x1 can't be retrieved anymore ..")
-        val data1XDeleted = storageGateway.retrieveData<ByteArray>(x1Tag, object : TypeToken<ByteArray>() {}.type)
-        assert(data1XDeleted == null)
+        val dataX1Deleted = storageGateway.retrieveData<ByteArray>(x1Tag, object : TypeToken<ByteArray>() {}.type)
+        assert(dataX1Deleted == null) { "The x1 stored value was still available: $dataX1Deleted" }
 
         logger.d("Checking that x2 can't be retrieved anymore ..")
-        val data2XDeleted = storageGateway.retrieveData<ByteArray>(x2Tag, object : TypeToken<ByteArray>() {}.type)
-        assert(data2XDeleted == null)
+        val dataX2Deleted = storageGateway.retrieveData<ByteArray>(x2Tag, object : TypeToken<ByteArray>() {}.type)
+        assert(dataX2Deleted == null) { "The x2 stored value was still available: $dataX2Deleted" }
 
         logger.d("Checking that x3 can't be retrieved anymore ..")
-        val data3XDeleted = storageGateway.retrieveData<ByteArray>(x3Tag, object : TypeToken<ByteArray>() {}.type)
-        assert(data3XDeleted == null)
+        val dataX3Deleted = storageGateway.retrieveData<ByteArray>(x3Tag, object : TypeToken<ByteArray>() {}.type)
+        assert(dataX3Deleted == null) { "The xx stored value was still available: $dataX3Deleted" }
     }
 
     private fun createRandomBytes(byteCount: Int): ByteArray {
