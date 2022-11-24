@@ -53,6 +53,7 @@ dependencies {
     implementation libs.moshi
     implementation libs.moshi.adapters
     implementation libs.kotshi.api
+    implementation libs.gson
     kapt libs.kotshi.compiler
 
     // Retrofit
