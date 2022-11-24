@@ -46,6 +46,7 @@ class MainViewModel @Inject constructor(
         logger.clearLog()
         updateState { it.copy(status = UiTestStatus.InProgress) }
         dispose(disposable)
+        logger.d(getDeviceInfoAsText())
         disposable = hardwareKeyStoreBasedEncryptedStorageTestUseCase
             .execute()
             .compose(schedulers.single(Schedulers.computation(), AndroidSchedulers.mainThread()))
@@ -53,14 +54,12 @@ class MainViewModel @Inject constructor(
     }
 
     private fun onTestFailed(error: Throwable) {
-        logger.d(getDeviceInfoAsText())
-        logger.d("onTestFailed: ${Log.getStackTraceString(error)}")
+        logger.d(Log.getStackTraceString(error))
         updateState { it.copy(status = UiTestStatus.FailedGeneric(error)) }
     }
 
     private fun onTestSuccess(result: StorageTestResult) {
-        logger.d(getDeviceInfoAsText())
-        logger.d("onTestSuccess: $result")
+        logger.d(result.toString())
         updateState { it.copy(status = mapResult(result)) }
     }
 

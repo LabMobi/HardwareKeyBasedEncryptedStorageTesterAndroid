@@ -48,6 +48,7 @@ dependencies {
 
     implementation libs.rxjava
     implementation libs.timber
+    implementation libs.gson
 
     implementation project(":app-common")
 }
