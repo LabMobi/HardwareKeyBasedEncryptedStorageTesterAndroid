@@ -9,7 +9,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import mobi.lab.hardwarekeybasedencryptedstoragetester.common.BaseActivity
 import mobi.lab.hardwarekeybasedencryptedstoragetester.common.ViewModelFactory
 import mobi.lab.hardwarekeybasedencryptedstoragetester.di.Injector
-import mobi.lab.hardwarekeybasedencryptedstoragetester.login.LoginActivity
 import mobi.lab.hardwarekeybasedencryptedstoragetester.main.MainActivity
 import javax.inject.Inject
 
@@ -17,7 +16,8 @@ import javax.inject.Inject
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : BaseActivity() {
 
-    @Inject lateinit var factory: ViewModelFactory
+    @Inject
+    lateinit var factory: ViewModelFactory
 
     private val viewModel: SplashViewModel by viewModels { factory }
 

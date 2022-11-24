@@ -32,4 +32,3 @@ class SplashViewModel @Inject constructor() : ViewModel() {
         object LaunchApplication : Action()
     }
 }
-

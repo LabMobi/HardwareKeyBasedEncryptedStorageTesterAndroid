@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">HardwareKeyBasedEncryptedStorageTester</string>
+    <string name="app_name">Encrypted Storage Tester</string>
     <string name="notification_channel_name">Notifications</string>
     <string name="title_error">Error</string>
     <string name="text_loading">Loading</string>
@@ -17,4 +17,13 @@
 
     <string name="error_generic">Something went wrong. Please try again.</string>
     <string name="error_no_network">Connection error. Please try again.</string>
+    <string name="text_status_start">Click to start</string>
+    <string name="button_start">Run the test</string>
+    <string name="title_share">Share</string>
+    <string name="text_status_running">Test in progress ..</string>
+    <string name="text_status_test_success">Test success!</string>
+    <string name="text_status_test_not_started">Test not started!</string>
+    <string name="text_status_test_in_progress">Test in progress ..</string>
+    <string name="text_status_test_failed_see_log">Test failed. See the trace below.</string>
+    <string name="text_title_share_results">Share test results</string>
 </resources>
