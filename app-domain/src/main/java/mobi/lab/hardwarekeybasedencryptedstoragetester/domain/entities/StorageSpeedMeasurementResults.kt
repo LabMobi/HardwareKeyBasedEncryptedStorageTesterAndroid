@@ -30,7 +30,7 @@ class StorageSpeedMeasurementResults(
             roundAndFormatToSec(deleteClearText.standardDeviationSec),
             roundAndFormatToSec(deleteEncrypted.averageSec),
             roundAndFormatToSec(deleteEncrypted.standardDeviationSec),
-            dataSizeBytes.toShort()
+            dataSizeBytes.toString()
         )
     }
 

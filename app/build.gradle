@@ -22,9 +22,9 @@ ext {
      * This means that every version (except build version) has up to 2 digits until it starts affecting other numbers.
      * w (versionBuild) is for making a release with the same version name, but different version code.
      */
-    versionMajor = 0
+    versionMajor = 1
     versionMinor = 0
-    versionPatch = 1
+    versionPatch = 0
     versionBuild = 0 // Use this when builds with the same version are needed. Change to 0 once done
     initVersioning()
 }
