@@ -2,15 +2,15 @@
 <resources>
     <string name="text_measurement_log_line">
 "
-Write (sec)
+Write %13$s bytes (sec)
 cleartxt %1$s avg %2$s stdev
 encrypt %3$s avg %4$s stdev
 
-Read (sec)
+Read %13$s bytes (sec)
 cleartxt %5$s avg %6$s stdev
 encrypt %7$s avg %8$s stdev
 
-Delete (sec)
+Delete %13$s bytes (sec)
 cleartxt %9$s avg %10$s stdev
 encrypt %11$s avg %12$s stdev
 "

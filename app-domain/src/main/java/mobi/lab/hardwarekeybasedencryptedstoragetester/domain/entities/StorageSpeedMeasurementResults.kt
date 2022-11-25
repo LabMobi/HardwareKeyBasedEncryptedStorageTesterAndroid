@@ -4,7 +4,9 @@ import android.content.Context
 import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.R
 import java.math.RoundingMode
 
+@Suppress("LongParameterList")
 class StorageSpeedMeasurementResults(
+    val dataSizeBytes: Int,
     val writeClearText: StorageSpeedMeasurement,
     val writeEncrypted: StorageSpeedMeasurement,
     val readClearText: StorageSpeedMeasurement,
@@ -28,6 +30,7 @@ class StorageSpeedMeasurementResults(
             roundAndFormatToSec(deleteClearText.standardDeviationSec),
             roundAndFormatToSec(deleteEncrypted.averageSec),
             roundAndFormatToSec(deleteEncrypted.standardDeviationSec),
+            dataSizeBytes.toShort()
         )
     }
 
