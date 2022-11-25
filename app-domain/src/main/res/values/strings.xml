@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_measurement_log_line">
+"
+Write (sec)
+cleartxt %1$s avg %2$s stdev
+encrypt %3$s avg %4$s stdev
+
+Read (sec)
+cleartxt %5$s avg %6$s stdev
+encrypt %7$s avg %8$s stdev
+
+Delete (sec)
+cleartxt %9$s avg %10$s stdev
+encrypt %11$s avg %12$s stdev
+"
+    </string>
+</resources>

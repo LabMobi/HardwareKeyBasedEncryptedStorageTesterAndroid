@@ -1,5 +1,7 @@
 package mobi.lab.hardwarekeybasedencryptedstoragetester.main
 
+import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.entities.StorageSpeedMeasurementResults
+
 sealed class UiTestStatus {
     object NotStated : UiTestStatus() {
         override fun toString(): String {
@@ -14,9 +16,10 @@ sealed class UiTestStatus {
     }
 
     data class FailedGeneric(val error: Throwable) : UiTestStatus()
-    object Success : UiTestStatus() {
+
+    class Success(val measurementResults: StorageSpeedMeasurementResults) : UiTestStatus() {
         override fun toString(): String {
-            return "Success"
+            return "Success(measurementResults=$measurementResults)"
         }
     }
 }

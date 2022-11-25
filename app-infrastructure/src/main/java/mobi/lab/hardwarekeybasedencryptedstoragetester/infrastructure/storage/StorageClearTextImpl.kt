@@ -79,6 +79,8 @@ class StorageClearTextImpl @Inject constructor(private val appContext: Context) 
         }
     }
 
+    override fun getTypeName() = "Clear text storage"
+
     private fun getSharedPrefsFor(tag: String): SharedPreferences {
         return appContext.getSharedPreferences(getStoragePrefix(tag), Context.MODE_PRIVATE)
     }

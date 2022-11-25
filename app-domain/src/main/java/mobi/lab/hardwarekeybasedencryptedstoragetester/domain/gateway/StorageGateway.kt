@@ -13,4 +13,6 @@ interface StorageGateway {
 
     @Throws(StorageException::class)
     fun removeData(tag: String)
+
+    fun getTypeName(): String
 }

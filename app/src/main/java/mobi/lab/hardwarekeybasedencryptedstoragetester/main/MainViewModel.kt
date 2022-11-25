@@ -21,7 +21,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val schedulers: SchedulerProvider,
     private val logger: LoggerGateway,
-    private val hardwareKeyStoreBasedEncryptedStorageTestUseCase: StorageTestUseCase
+    private val storageTestUseCase: StorageTestUseCase
 ) : ViewModel(), LoggerGateway.LoggerGatewayListener {
 
     private val _action = MutableLiveData<SingleEvent<Action>>()
@@ -42,24 +42,13 @@ class MainViewModel @Inject constructor(
         logger.setLogLinesListener(null)
     }
 
-    fun onRunTestEncryptedClicked() {
+    fun onRunTestClicked() {
         logger.clearLog()
         updateState { it.copy(status = UiTestStatus.InProgress) }
         dispose(disposable)
         logger.d(getDeviceInfoAsText())
-        disposable = hardwareKeyStoreBasedEncryptedStorageTestUseCase
-            .execute(useEncryptedStorage = true)
-            .compose(schedulers.single(Schedulers.computation(), AndroidSchedulers.mainThread()))
-            .subscribe(::onTestSuccess, ::onTestFailed)
-    }
-
-    fun onRunTestClearTextClicked() {
-        logger.clearLog()
-        updateState { it.copy(status = UiTestStatus.InProgress) }
-        dispose(disposable)
-        logger.d(getDeviceInfoAsText())
-        disposable = hardwareKeyStoreBasedEncryptedStorageTestUseCase
-            .execute(useEncryptedStorage = false)
+        disposable = storageTestUseCase
+            .execute()
             .compose(schedulers.single(Schedulers.computation(), AndroidSchedulers.mainThread()))
             .subscribe(::onTestSuccess, ::onTestFailed)
     }
@@ -70,13 +59,12 @@ class MainViewModel @Inject constructor(
     }
 
     private fun onTestSuccess(result: StorageTestResult) {
-        logger.d(result.toString())
         updateState { it.copy(status = mapResult(result)) }
     }
 
     private fun mapResult(result: StorageTestResult): UiTestStatus {
         return when (result) {
-            StorageTestResult.Success -> UiTestStatus.Success
+            is StorageTestResult.Success -> UiTestStatus.Success(result.measurementResults)
             is StorageTestResult.Failed -> UiTestStatus.FailedGeneric(result.throwable)
         }.exhaustive
     }
@@ -99,7 +87,7 @@ class MainViewModel @Inject constructor(
             is UiTestStatus.FailedGeneric,
             UiTestStatus.InProgress,
             UiTestStatus.NotStated,
-            UiTestStatus.Success -> shareResults(state.value ?: defaultState())
+            is UiTestStatus.Success -> shareResults(state.value ?: defaultState())
         }.exhaustive
     }
 

@@ -1,10 +1,20 @@
-Mobi Lab
+Mobi Lab / We make robots talk to humans
 
 # Hardware Key Based Encrypted Storage Tester README
 
 ## Description
 
-As simple push-a-button tester to see if the EncryptedSharedPreferences based storage is operational on a given device. If not then allows to easily post logs about the failure.
+As simple push-a-button tester. 
+
+Allows to see
+
+- if the EncryptedSharedPreferences based storage is operational on a given device. 
+  - If not then allows to post logs about the failure
+- the speed difference on the Read, Write and Delete operations between EncryptedSharedPreferences and SharedPreferences
+
+<img src="img\screen1.png" style="zoom:25%;" />
+
+Disclaimer: Storage structure uses per-object prefs files. If this is not a need for you then you can easily modify it to use a single file.
 
 ## Running it
 

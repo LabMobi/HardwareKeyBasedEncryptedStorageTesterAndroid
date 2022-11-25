@@ -70,21 +70,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_16"
         android:text="@string/button_start_encrypted"
-        app:layout_constraintBottom_toTopOf="@id/button_start_clear_text_test"
-        app:layout_constraintEnd_toEndOf="@id/guide_end"
-        app:layout_constraintStart_toStartOf="@id/guide_start"
-        app:layout_constraintTop_toBottomOf="@id/text_title" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_start_clear_text_test"
-        style="@style/Button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_16"
-        android:text="@string/button_start_clear_text"
         app:layout_constraintBottom_toTopOf="@id/scrollview"
         app:layout_constraintEnd_toEndOf="@id/guide_end"
         app:layout_constraintStart_toStartOf="@id/guide_start"
-        app:layout_constraintTop_toBottomOf="@id/button_start_encrypted_test" />
+        app:layout_constraintTop_toBottomOf="@id/text_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

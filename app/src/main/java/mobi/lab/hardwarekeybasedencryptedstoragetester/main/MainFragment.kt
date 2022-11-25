@@ -20,6 +20,7 @@ import mobi.lab.hardwarekeybasedencryptedstoragetester.common.platform.LogoutMon
 import mobi.lab.hardwarekeybasedencryptedstoragetester.common.util.DialogUtil
 import mobi.lab.hardwarekeybasedencryptedstoragetester.databinding.FragmentMainBinding
 import mobi.lab.hardwarekeybasedencryptedstoragetester.di.Injector
+import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.gateway.LoggerGateway
 import mobi.lab.hardwarekeybasedencryptedstoragetester.login.LoginFragment
 import timber.log.Timber
 import javax.inject.Inject
@@ -33,6 +34,9 @@ class MainFragment : BaseFragment(), ViewBindingHolder<FragmentMainBinding> by F
     lateinit var factory: ViewModelFactory
 
     private val viewModel: MainViewModel by viewModels { factory }
+
+    @Inject
+    lateinit var logger: LoggerGateway
 
     init {
         Injector.inject(this)
@@ -51,8 +55,7 @@ class MainFragment : BaseFragment(), ViewBindingHolder<FragmentMainBinding> by F
         super.onViewCreated(view, savedInstanceState)
         requireBinding {
             initToolbar(this)
-            buttonStartEncryptedTest.setOnClickListener { viewModel.onRunTestEncryptedClicked() }
-            buttonStartClearTextTest.setOnClickListener { viewModel.onRunTestClearTextClicked() }
+            buttonStartEncryptedTest.setOnClickListener { viewModel.onRunTestClicked() }
         }
 
         /**
@@ -79,9 +82,9 @@ class MainFragment : BaseFragment(), ViewBindingHolder<FragmentMainBinding> by F
                 UiTestStatus.NotStated -> onTestEnded()
                 UiTestStatus.InProgress -> onTestStarted()
                 is UiTestStatus.FailedGeneric -> onTestFailed(state.status)
-                UiTestStatus.Success -> onTestSuccess(UiTestStatus.Success)
+                is UiTestStatus.Success -> onTestSuccess(state.status)
             }.exhaustive
-            onLogLinesUpdated(state.logLines)
+            onLogLinesUpdated(state.status, state.logLines)
         }
     }
 
@@ -135,9 +138,14 @@ class MainFragment : BaseFragment(), ViewBindingHolder<FragmentMainBinding> by F
         return DialogUtil.isShowing(activity, LoginFragment.TAG_DIALOG_PROGRESS)
     }
 
-    private fun onLogLinesUpdated(logLines: List<CharSequence>) {
+    private fun onLogLinesUpdated(status: UiTestStatus, logLines: List<CharSequence>) {
         requireBinding {
-            textLog.text = getLogAsText(logLines)
+            val results = if (status is UiTestStatus.Success) {
+                status.measurementResults.getFormattedResults(requireContext())
+            } else {
+                ""
+            }
+            textLog.text = getString(R.string.text_x_linebreak_y, getLogAsText(logLines), results)
             scrollview.post {
                 scrollview.smoothScrollTo(0, textLog.bottom)
             }
@@ -153,12 +161,17 @@ class MainFragment : BaseFragment(), ViewBindingHolder<FragmentMainBinding> by F
             is UiTestStatus.FailedGeneric -> getString(R.string.text_status_test_failed_see_log)
             UiTestStatus.InProgress -> getString(R.string.text_status_test_in_progress)
             UiTestStatus.NotStated -> getString(R.string.text_status_test_not_started)
-            UiTestStatus.Success -> getString(R.string.text_status_test_success)
+            is UiTestStatus.Success -> getString(R.string.text_status_test_success)
         }.exhaustive
     }
 
     private fun shareResults(state: MainViewModel.State) {
-        val text = getResultAsText(state.status) + "\n\n" + getLogAsText(state.logLines)
+        val results = if (state.status is UiTestStatus.Success) {
+            state.status.measurementResults.getFormattedResults(requireContext())
+        } else {
+            ""
+        }
+        val text = getResultAsText(state.status) + "\n\n" + getLogAsText(state.logLines) + "\n\n" + results
         shareResultsAsText(text)
     }
 

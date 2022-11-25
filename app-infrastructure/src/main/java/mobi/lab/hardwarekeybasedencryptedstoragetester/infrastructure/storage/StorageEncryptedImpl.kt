@@ -81,6 +81,8 @@ class StorageEncryptedImpl @Inject constructor(private val appContext: Context) 
         }
     }
 
+    override fun getTypeName() = "Encrypted storage"
+
     private fun getEncryptedSharedPreferencesFor(tag: String): SharedPreferences {
         val masterKey: MasterKey = createOrGetMasterKey()
 
