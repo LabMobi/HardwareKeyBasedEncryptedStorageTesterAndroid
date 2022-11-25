@@ -32,6 +32,7 @@ class StorageTestUseCase @Inject constructor(
             logger.d("Done\n")
             StorageTestResult.Success(measurementResults)
         } catch (t: Throwable) {
+            logger.e(t, "runTest")
             StorageTestResult.Failed(t)
         }
     }
