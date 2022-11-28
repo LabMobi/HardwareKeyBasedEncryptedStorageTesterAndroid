@@ -1,7 +1,7 @@
 package mobi.lab.hardwarekeybasedencryptedstoragetester.domain.entities
 
 sealed class StorageTestResult {
-    class Success(val measurementResults: StorageSpeedMeasurementResults) : StorageTestResult() {
+    class Success(val measurementResults: List<StorageSpeedMeasurementResults>) : StorageTestResult() {
         override fun toString(): String {
             return "Success(measurements=$measurementResults)"
         }

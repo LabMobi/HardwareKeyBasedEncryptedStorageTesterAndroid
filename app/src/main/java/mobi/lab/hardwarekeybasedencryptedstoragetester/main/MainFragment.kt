@@ -141,7 +141,7 @@ class MainFragment : BaseFragment(), ViewBindingHolder<FragmentMainBinding> by F
     private fun onLogLinesUpdated(status: UiTestStatus, logLines: List<CharSequence>) {
         requireBinding {
             val results = if (status is UiTestStatus.Success) {
-                status.measurementResults.getFormattedResults(requireContext())
+                status.getFormattedMeasurementResults(requireContext())
             } else {
                 ""
             }
@@ -167,7 +167,7 @@ class MainFragment : BaseFragment(), ViewBindingHolder<FragmentMainBinding> by F
 
     private fun shareResults(state: MainViewModel.State) {
         val results = if (state.status is UiTestStatus.Success) {
-            state.status.measurementResults.getFormattedResults(requireContext())
+            state.status.getFormattedMeasurementResults(requireContext())
         } else {
             ""
         }

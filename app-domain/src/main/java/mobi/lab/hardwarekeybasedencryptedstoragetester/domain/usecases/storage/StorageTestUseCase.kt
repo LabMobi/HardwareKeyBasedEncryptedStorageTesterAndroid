@@ -28,36 +28,37 @@ class StorageTestUseCase @Inject constructor(
     private fun runTest(): StorageTestResult {
         return try {
             runUsageTests()
-            val measurementResults = measureUsageSpeed()
+            val measurementResults1 = measureUsageSpeed(MEASUREMENT_BYTE_SIZE_1)
+            val measurementResults2 = measureUsageSpeed(MEASUREMENT_BYTE_SIZE_2)
             logger.d("Done\n")
-            StorageTestResult.Success(measurementResults)
+            StorageTestResult.Success(arrayListOf(measurementResults1, measurementResults2))
         } catch (t: Throwable) {
             logger.e(t, "runTest")
             StorageTestResult.Failed(t)
         }
     }
 
-    private fun measureUsageSpeed(): StorageSpeedMeasurementResults {
-        val data = createRandomBytes(MEASUREMENT_BYTE_SIZE)
+    private fun measureUsageSpeed(dataSize: Int): StorageSpeedMeasurementResults {
+        val data = createRandomBytes(dataSize)
 
-        val writeClearText = measureStorageOp("write", clearTextStorageGateway.getTypeName(), MEASUREMENT_LOOP_COUNT) {
+        val writeClearText = measureStorageOp("write $dataSize bytes", clearTextStorageGateway.getTypeName(), MEASUREMENT_LOOP_COUNT) {
             clearTextStorageGateway.storeData(it, data)
         }
-        val writeEncrypted = measureStorageOp("write", encryptedStorageGateway.getTypeName(), MEASUREMENT_LOOP_COUNT) {
+        val writeEncrypted = measureStorageOp("write $dataSize bytes", encryptedStorageGateway.getTypeName(), MEASUREMENT_LOOP_COUNT) {
             encryptedStorageGateway.storeData(it, data)
         }
 
-        val readClearText = measureStorageOp("read", clearTextStorageGateway.getTypeName(), MEASUREMENT_LOOP_COUNT) {
+        val readClearText = measureStorageOp("read $dataSize bytes", clearTextStorageGateway.getTypeName(), MEASUREMENT_LOOP_COUNT) {
             clearTextStorageGateway.retrieveData<ByteArray>(it, object : TypeToken<ByteArray>() {}.type)
         }
-        val readEncrypted = measureStorageOp("read", encryptedStorageGateway.getTypeName(), MEASUREMENT_LOOP_COUNT) {
+        val readEncrypted = measureStorageOp("read $dataSize bytes", encryptedStorageGateway.getTypeName(), MEASUREMENT_LOOP_COUNT) {
             encryptedStorageGateway.retrieveData<ByteArray>(it, object : TypeToken<ByteArray>() {}.type)
         }
 
-        val deleteClearText = measureStorageOp("delete", clearTextStorageGateway.getTypeName(), MEASUREMENT_LOOP_COUNT) {
+        val deleteClearText = measureStorageOp("delete $dataSize bytes", clearTextStorageGateway.getTypeName(), MEASUREMENT_LOOP_COUNT) {
             clearTextStorageGateway.removeData(it)
         }
-        val deleteEncrypted = measureStorageOp("delete", encryptedStorageGateway.getTypeName(), MEASUREMENT_LOOP_COUNT) {
+        val deleteEncrypted = measureStorageOp("delete $dataSize bytes", encryptedStorageGateway.getTypeName(), MEASUREMENT_LOOP_COUNT) {
             encryptedStorageGateway.removeData(it)
         }
 
@@ -99,7 +100,7 @@ class StorageTestUseCase @Inject constructor(
     @Suppress("MagicNumber")
     private fun runUsageTests() {
         for (gateway: StorageGateway in arrayOf(encryptedStorageGateway, clearTextStorageGateway)) {
-            for (i in 1..3) {
+            for (i in 1..2) {
                 logger.d("\nRunning loop $i")
                 runTestLoop(gateway)
             }
@@ -173,7 +174,8 @@ class StorageTestUseCase @Inject constructor(
     }
 
     companion object {
-        const val MEASUREMENT_BYTE_SIZE = 32
+        const val MEASUREMENT_BYTE_SIZE_1 = 2048
+        const val MEASUREMENT_BYTE_SIZE_2 = 4096
         const val MEASUREMENT_LOOP_COUNT = 15
     }
 }
