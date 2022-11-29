@@ -2,6 +2,7 @@
 <resources>
     <string name="text_measurement_log_line">
 "
+KeyStoreLevel: %14$s
 Write %13$s bytes (sec)
 cleartxt %1$s avg %2$s stdev
 encrypt %3$s avg %4$s stdev

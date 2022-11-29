@@ -6,6 +6,7 @@ import java.math.RoundingMode
 
 @Suppress("LongParameterList")
 class StorageSpeedMeasurementResults(
+    val keyStoreLevelForEncrypted: KeyStoreLevel,
     val dataSizeBytes: Int,
     val writeClearText: StorageSpeedMeasurement,
     val writeEncrypted: StorageSpeedMeasurement,
@@ -30,7 +31,8 @@ class StorageSpeedMeasurementResults(
             roundAndFormatToSec(deleteClearText.standardDeviationSec),
             roundAndFormatToSec(deleteEncrypted.averageSec),
             roundAndFormatToSec(deleteEncrypted.standardDeviationSec),
-            dataSizeBytes.toString()
+            dataSizeBytes.toString(),
+            keyStoreLevelForEncrypted.toString()
         )
     }
 

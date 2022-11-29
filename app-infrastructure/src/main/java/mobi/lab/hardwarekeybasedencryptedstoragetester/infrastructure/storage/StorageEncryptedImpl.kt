@@ -9,6 +9,7 @@ import androidx.security.crypto.MasterKey
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
+import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.entities.KeyStoreLevel
 import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.entities.StorageException
 import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.gateway.EncryptedStorageGateway
 import java.lang.reflect.Type
@@ -82,6 +83,17 @@ class StorageEncryptedImpl @Inject constructor(private val appContext: Context) 
     }
 
     override fun getTypeName() = "Encrypted storage"
+
+    override fun getKeyStoreLevel(): KeyStoreLevel {
+        val masterKey = createOrGetMasterKey()
+        return if (masterKey.isStrongBoxBacked) {
+            KeyStoreLevel.Strongbox
+        } else if (masterKey.isKeyStoreBacked) {
+            KeyStoreLevel.TEE
+        } else {
+            KeyStoreLevel.None
+        }
+    }
 
     private fun getEncryptedSharedPreferencesFor(tag: String): SharedPreferences {
         val masterKey: MasterKey = createOrGetMasterKey()

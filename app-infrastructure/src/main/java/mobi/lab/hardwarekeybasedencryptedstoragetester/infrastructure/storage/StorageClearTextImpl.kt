@@ -7,6 +7,7 @@ import android.text.TextUtils
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
+import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.entities.KeyStoreLevel
 import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.entities.StorageException
 import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.gateway.ClearTextStorageGateway
 import java.lang.reflect.Type
@@ -80,6 +81,10 @@ class StorageClearTextImpl @Inject constructor(private val appContext: Context) 
     }
 
     override fun getTypeName() = "Clear text storage"
+
+    override fun getKeyStoreLevel(): KeyStoreLevel {
+        return KeyStoreLevel.None
+    }
 
     private fun getSharedPrefsFor(tag: String): SharedPreferences {
         return appContext.getSharedPreferences(getStoragePrefix(tag), Context.MODE_PRIVATE)

@@ -1,5 +1,6 @@
 package mobi.lab.hardwarekeybasedencryptedstoragetester.domain.gateway
 
+import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.entities.KeyStoreLevel
 import mobi.lab.hardwarekeybasedencryptedstoragetester.domain.entities.StorageException
 import java.lang.reflect.Type
 
@@ -15,4 +16,6 @@ interface StorageGateway {
     fun removeData(tag: String)
 
     fun getTypeName(): String
+
+    fun getKeyStoreLevel(): KeyStoreLevel
 }

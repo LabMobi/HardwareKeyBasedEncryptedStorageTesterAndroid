@@ -63,6 +63,7 @@ class StorageTestUseCase @Inject constructor(
         }
 
         return StorageSpeedMeasurementResults(
+            keyStoreLevelForEncrypted = encryptedStorageGateway.getKeyStoreLevel(),
             writeClearText = writeClearText,
             writeEncrypted = writeEncrypted,
             readClearText = readClearText,
