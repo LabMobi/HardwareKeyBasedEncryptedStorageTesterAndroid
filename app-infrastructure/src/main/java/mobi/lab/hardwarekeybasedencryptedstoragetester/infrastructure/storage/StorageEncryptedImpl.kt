@@ -98,6 +98,7 @@ class StorageEncryptedImpl @Inject constructor(private val appContext: Context) 
     private fun createOrGetMasterKey(): MasterKey {
         return MasterKey.Builder(appContext, STORAGE_MASTER_KEY_ALIAS)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .setRequestStrongBoxBacked(true)
             .build()
     }
 
@@ -114,7 +115,7 @@ class StorageEncryptedImpl @Inject constructor(private val appContext: Context) 
     }
 
     companion object {
-        const val STORAGE_MASTER_KEY_ALIAS = "_tester_master_key_"
+        const val STORAGE_MASTER_KEY_ALIAS = "_tester_master_key_1"
         const val STORAGE_ID = "mobi.lab.hardwarekeybasedencryptedstoragetester_encrypted"
     }
 }
