@@ -69,14 +69,14 @@ class StorageEncryptedImpl @Inject constructor(private val appContext: Context) 
         }
     }
 
-    @SuppressLint("CommitPrefEdits")
+    @SuppressLint("CommitPrefEdits", "ApplySharedPref")
     @Suppress("SwallowedException")
     override fun removeData(tag: String) {
         // If we do not do this then the read after remove will not return a null value
         storeData(tag, null)
         try {
             val pref = getEncryptedSharedPreferencesFor(tag)
-            pref.edit().remove(tag)
+            pref.edit().remove(tag).commit()
         } catch (e: Throwable) {
             throw StorageException.forStore("Unable to remove a value from device storage. Check if there is space on the disk.")
         }
