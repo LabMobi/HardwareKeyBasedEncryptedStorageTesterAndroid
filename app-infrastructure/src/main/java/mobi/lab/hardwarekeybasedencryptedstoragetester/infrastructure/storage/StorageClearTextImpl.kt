@@ -3,6 +3,7 @@ package mobi.lab.hardwarekeybasedencryptedstoragetester.infrastructure.storage
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.text.TextUtils
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -67,14 +68,19 @@ class StorageClearTextImpl @Inject constructor(private val appContext: Context) 
         }
     }
 
-    @SuppressLint("CommitPrefEdits")
+    @SuppressLint("CommitPrefEdits", "ApplySharedPref")
     @Suppress("SwallowedException")
     override fun removeData(tag: String) {
-        // If we do not do this then the read after remove will not return a null value
-        storeData(tag, null)
         try {
             val pref = getSharedPrefsFor(tag)
-            pref.edit().remove(tag)
+            pref.edit().remove(getPrimaryDataKey(tag)).commit()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                try {
+                    appContext.deleteSharedPreferences(getStoragePrefix(tag))
+                } catch (e: Throwable) {
+                    // Swallow, we do not care about the result or any exceptions
+                }
+            }
         } catch (e: Throwable) {
             throw StorageException.forStore("Unable to remove a value from device storage. Check if there is space on the disk.")
         }
