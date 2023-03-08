@@ -1,6 +1,6 @@
-Mobi Lab / We make robots talk to humans
-
 # Hardware Key Based Encrypted Storage Tester README
+
+<img src="img\mobilab-header-logo.png" style="zoom:25%;" />
 
 ## Description
 
